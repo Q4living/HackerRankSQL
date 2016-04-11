@@ -36,11 +36,8 @@ FROM STATION
 WHERE ID % 2 = 0;
 
 -- Weather Observation Station 4
-SELECT main.NUM - slave.NUMuniq
-FROM (SELECT COUNT(CITY) AS NUM FROM STATION) as main, 
-	(SELECT COUNT(second.CITY) AS NUMuniq 
-		FROM (SELECT DISTINCT CITY FROM STATION) as second) as slave
-;
+SELECT count(city)-count(distinct city)
+FROM STATION;
 
 -- Weather Observation Station 5
 SELECT 		min(main.City), len(main.City)
