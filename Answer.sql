@@ -30,6 +30,7 @@ WHERE COUNTRYCODE = "JPN";
 -- Weather Observation Station 1
 SELECT CITY, STATE
 FROM STATION;
+
 -- Weather Observation Station 3
 SELECT DISTINCT CITY
 FROM STATION
