@@ -43,16 +43,9 @@ FROM STATION;
 -- Weather Observation Station 5
 SELECT 		min(main.City), len(main.City)
 FROM 		STATION as main
-WHERE		len(main.city) = (SELECT Min(len(STATION.city)) FROM STATION)
-GROUP BY 	len(main.City) 
-
-UNION ALL
-
-SELECT 		min(main.City), len(main.City)
-FROM 		STATION as main
-WHERE   	len(main.city) = (SELECT MAX(len(STATION.city)) FROM STATION)
-GROUP BY 	len(main.City)
-;
+WHERE		len(main.city) = (SELECT Min(len(STATION.city)) FROM STATION) OR 
+		len(main.city) = (SELECT MAX(len(STATION.city)) FROM STATION)
+GROUP BY 	len(main.City) ;
 
 -- Weather Observation Station 6
 SELECT DISTINCT CITY
