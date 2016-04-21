@@ -140,6 +140,33 @@ LEFT(CITY,1) <> "O" AND
 LEFT(CITY,1) <> "U")
 ;
 
+-- Revising Aggregations - The Count Function
+SELECT COUNT(name) FROM CITY WHERE POPULATION > 100000;
+
+-- Revising Aggregations - The Sum Function
+SELECT SUM(population) FROM CITY WHERE district = "California";
+
+-- Revising Aggregations - Averages
+SELECT avg(population) FROM CITY WHERE district = "California";
+
+-- Average Population
+SELECT round(avg(population),0) FROM CITY;
+
+-- Japan Population
+SELECT SUM(population) FROM CITY WHERE COUNTRYCODE = "JPN";
+
+-- Population Density Difference
+SELECT Max(population)-min(population) FROM CITY;
+
+-- Weather Observation Station 2
+SELECT FORMAT(SUM(LAT_N),"#.##"),"",format(SUM(LONG_W),"#.##") FROM STATION;
+
+-- Weather Observation Station 13
+SELECT FORMAT(sum(LAT_N),"#.####") FROM STATION WHERE LAT_N > 38.7880 AND LAT_N < 137.2345;
+
+-- Weather Observation Station 14
+SELECT FORMAT(MAX(LAT_N),"#.####") FROM STATION WHERE LAT_N < 137.2345;
+
 -- Weather Observation Station 15
 SELECT FORMAT(LONG_W,"#.####") 
 FROM STATION 
@@ -148,6 +175,30 @@ WHERE LAT_N = (
 		FROM STATION 
 		WHERE LAT_N < 137.2345)
 ;
+
+-- Weather Observation Station 16
+SELECT FORMAT(MIN(LAT_N),"#.####") FROM STATION WHERE LAT_N > 38.7780;
+
+-- Weather Observation Station 17
+SELECT FORMAT(LONG_W,"#.####") 
+FROM STATION 
+WHERE LAT_N = (
+		SELECT min(LAT_N) 
+		FROM STATION 
+		WHERE LAT_N > 38.7780)
+;
+
+-- Weather Observation Station 18
+SELECT FORMAT(sqrt(POWER(min(LAT_N)-min(LONG_W),2))+sqrt(POWER(MAX(LAT_N)-Max(LONG_W),2)),"#.####") FROM STATION;
+
+-- Weather Observation Station 19
+SELECT FORMAT(sqrt(POWER(min(LAT_N)-min(LONG_W),2)+POWER(MAX(LAT_N)-Max(LONG_W),2)),"#.###0") FROM STATION;
+
+-- Weather Observation Station 20
+SELECT DISTINCT FORMAT(PERCENTILE_DISC(0.5) WITHIN GROUP (ORDER BY LAT_N) OVER (),"#.####") FROM STATION;
+
+-- The Blunder
+SELECT cast(ceiling(avg(CAST(SALARY AS FLOAT))-avg(cast(REPLACE(salary,"0","") AS float))) as INT) FROM EMPLOYEES;
 
 -- PADS
 SELECT main.Name + "(" + left(main.occupation,1) + ")" as NameOccup
@@ -213,3 +264,42 @@ SELECT
 	Students.marks
 FROM Students INNER JOIN Grades ON floor(IIF(Students.marks=100,students.marks-1,students.marks)/10)*10 = grades.min_mark
 ORDER BY Grades.grade DESC, Students.name, Students.marks ASC;
+
+-- Draw The Triangle 1
+DECLARE @i INT = 20
+WHILE (@i > 0) 
+BEGIN
+   PRINT REPLICATE('* ', @i) 
+   SET @i = @i - 1
+END
+
+-- Draw The Triangle 2
+DECLARE @i INT = 20
+DECLARE @y INT = 0
+WHILE (@i > @y) 
+BEGIN
+    SET @y = @y + 1   
+    PRINT REPLICATE('* ', @y) 
+END
+
+-- Print Prime Numbers
+DECLARE @pdiv INT = 2; 
+DECLARE @pnum INT = 2; 
+DECLARE @printout nvarchar(1000); 
+DECLARE @i int= 0;
+
+set @printout = "";
+
+WHILE @pnum <= 1000
+BEGIN 
+    set @i=0;
+    set @pdiv=2; 
+    WHILE @pdiv < @pnum 
+    BEGIN 
+        if(@pnum%@pdiv=0) set @i=@i+1; 
+        SET @pdiv = @pdiv + 1; 
+    END; 
+    if(@i=0) set @printout=@printout+concat(@pnum,'&'); 
+    SET @pnum = @pnum + 1; 
+END;
+print substring(@printout,1, len(@printout)-1);
