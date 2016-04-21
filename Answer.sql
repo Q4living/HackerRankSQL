@@ -282,6 +282,13 @@ BEGIN
     PRINT REPLICATE('* ', @y) 
 END
 
+-- Placements
+SELECT main.name
+FROM (
+SELECT main.name, main.salary, friends.friend_id
+FROM (SELECT students.id, students.name, packages.salary FROM students inner join packages on students.id = packages.id) as main INNER JOIN friends on main.id = friends.id) as main inner join packages as friend on main.friend_id = friend.id
+WHERE main.salary < friend.salary ORDER BY friend.salary
+
 -- Print Prime Numbers
 DECLARE @pdiv INT = 2; 
 DECLARE @pnum INT = 2; 
