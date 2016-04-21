@@ -140,6 +140,15 @@ LEFT(CITY,1) <> "O" AND
 LEFT(CITY,1) <> "U")
 ;
 
+-- Weather Observation Station 15
+SELECT FORMAT(LONG_W,"#.####") 
+FROM STATION 
+WHERE LAT_N = (
+		SELECT max(LAT_N) 
+		FROM STATION 
+		WHERE LAT_N < 137.2345)
+;
+
 -- PADS
 SELECT main.Name + "(" + left(main.occupation,1) + ")" as NameOccup
 FROM OCCUPATIONS as 
